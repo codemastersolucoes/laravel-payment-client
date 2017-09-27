@@ -1,0 +1,30 @@
+{
+    "name": "payments/client",
+    "description": "",
+    "authors": [
+        {
+            "name": "Felipe da Silva Pinheiro",
+            "email": "felipepinheiro@univicosa.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "auth/openid-client": "^0.6.6",
+        "guzzlehttp/guzzle": "^6.3",
+        "laravel/framework": "5.5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Payments\\Client\\": ""
+        }
+    },
+    "config": {
+        "secure-http": false
+    },
+    "repositories": {
+        "bitbucket": {
+            "type": "vcs",
+            "url": "http://bitbucket.univicosa.com.br:7990/scm/auth/openid-client.git"
+        }
+    }
+}
