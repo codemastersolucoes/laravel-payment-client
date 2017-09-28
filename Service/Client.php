@@ -35,7 +35,7 @@ class Client
     {
         try {
             $system = config('payment.system');
-            $result = $this->client->post('api/beneficiary', ['body' => compact('name', 'system', 'account', 'valid_until')]);
+            $result = $this->client->post('api/beneficiary', ['form_params' => compact('name', 'system', 'account', 'valid_until')]);
         } catch (\Exception $exception) {
             return ['error' => $exception->getMessage()];
         }
@@ -90,7 +90,7 @@ class Client
         }
         $data = compact('payer', 'descriptions', 'value', 'discount', 'details', 'deadline', 'beneficiary');
         try {
-            $result = $this->client->post('api/boleto', ['body' => $data]);
+            $result = $this->client->post('api/boleto', ['form_params' => $data]);
         } catch (\Exception $exception) {
             return ['error' => $exception->getMessage()];
         }
