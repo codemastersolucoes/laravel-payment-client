@@ -1,6 +1,7 @@
 {
     "name": "payments/client",
-    "description": "",
+    "description": "Payment Client",
+    "version": "0.1.1",
     "authors": [
         {
             "name": "Felipe da Silva Pinheiro",

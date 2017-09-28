@@ -66,17 +66,31 @@ class Client
     }
 
     /**
-     * @param array $data
+     * @param array $descriptions
+     * @param array $details
+     * @param float $value
+     * @param float $discount
+     * @param string $beneficiary
+     * @param int $deadline
      * @return array
      */
-    public function createBoleto(array $data) : array
+    public function createBoleto(array $descriptions,
+                                 array $details,
+                                 float $value,
+                                 float $discount,
+                                 string $beneficiary,
+                                 int $deadline = 1) : array
     {
         $payer = $this->getPayer();
         if (isset($payer['error'])) {
             return $payer;
         }
+        foreach ($descriptions as $key => $description) {
+            $descriptions[$key] = compact('description');
+        }
+        $data = compact('payer', 'descriptions', 'value', 'discount', 'details', 'deadline', 'beneficiary');
         try {
-            $result = $this->client->post('api/boleto', ['body' => array_merge(compact('payer'), $data)]);
+            $result = $this->client->post('api/boleto', ['body' => $data]);
         } catch (\Exception $exception) {
             return ['error' => $exception->getMessage()];
         }
