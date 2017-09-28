@@ -57,11 +57,11 @@ class Client
 
         return [
             'name' => $user['name'],
-            'address' => $user['street'],
-            'district' => $user['district'],
-            'cep' => $user['zip'],
-            'state' => $user['state'],
-            'city' => $user['city'],
+            'address' => $user['address']['street'],
+            'district' => $user['address']['district'],
+            'cep' => $user['address']['zip'],
+            'state' => $user['address']['state']['initials'],
+            'city' => $user['address']['city'],
             'cpf' => $user['cpf']];
     }
 
