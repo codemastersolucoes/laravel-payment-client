@@ -44,6 +44,7 @@ class Client
 
     /**
      * @return array
+     * @throws \Exception
      */
     private function getPayer() : array
     {
@@ -54,6 +55,10 @@ class Client
             return ['error' => $exception->getMessage()];
         }
         $user = (\GuzzleHttp\json_decode($result->getBody(), true))['user'];
+
+        if (!isset($user['address'])) {
+            throw new \Exception('Endereço não preenchido.', 422);
+        }
 
         return [
             'name' => $user['name'],
@@ -73,12 +78,13 @@ class Client
      * @param string $beneficiary
      * @param int $deadline
      * @return array
+     * @throws \Exception
      */
     public function createBoleto(array $descriptions,
                                  array $details,
                                  float $value,
-                                 float $discount,
                                  string $beneficiary,
+                                 float $discount = 0.0,
                                  int $deadline = 1) : array
     {
         $payer = $this->getPayer();
@@ -91,6 +97,35 @@ class Client
         $data = compact('payer', 'descriptions', 'value', 'discount', 'details', 'deadline', 'beneficiary');
         try {
             $result = $this->client->post('api/boleto', ['form_params' => $data]);
+        } catch (\Exception $exception) {
+            return ['error' => $exception->getMessage()];
+        }
+
+        return \GuzzleHttp\json_decode($result->getBody(), true);
+    }
+
+    /**
+     * @param array $details
+     * @param array $credit_card
+     * @param float $value
+     * @param string $beneficiary
+     * @param float $discount
+     * @return array
+     * @throws \Exception
+     */
+    public function createCreditCard(array $details,
+                                 array $credit_card,
+                                 float $value,
+                                 string $beneficiary,
+                                 float $discount = 0.0) : array
+    {
+        $payer = $this->getPayer();
+        if (isset($payer['error'])) {
+            return $payer;
+        }
+        $data = compact('payer', 'credit_card', 'value', 'discount', 'details', 'beneficiary');
+        try {
+            $result = $this->client->post('api/credit', ['form_params' => $data]);
         } catch (\Exception $exception) {
             return ['error' => $exception->getMessage()];
         }
