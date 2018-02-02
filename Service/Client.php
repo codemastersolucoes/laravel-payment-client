@@ -5,6 +5,9 @@ namespace Payments\Client\Service;
 
 
 use Carbon\Carbon;
+use Payments\Client\Entities\Beneficiary;
+use Payments\Client\Entities\Boleto;
+use Payments\Client\Entities\CreditCard;
 
 
 class Client
@@ -26,16 +29,13 @@ class Client
     }
 
     /**
-     * @param string $name
-     * @param string $account
-     * @param Carbon $valid_until
+     * @param Beneficiary $beneficiary
      * @return array
      */
-    public function createBeneficiary(string $name, string $account, Carbon $valid_until) : array
+    public function createBeneficiary(Beneficiary $beneficiary) : array
     {
         try {
-            $system = config('payment.system');
-            $result = $this->client->post('api/beneficiary', ['form_params' => compact('name', 'system', 'account', 'valid_until')]);
+            $result = $this->client->post('api/beneficiary', ['form_params' => $beneficiary->jsonSerialize()]);
         } catch (\Exception $exception) {
             return ['error' => $exception->getMessage()];
         }
@@ -51,11 +51,11 @@ class Client
         try {
             $client = \Modules\OpenId\Repositories\Client::getClient();
             $result = $client->get('api/user');
+            $user = (\GuzzleHttp\json_decode($result->getBody(), true))['user'];
         } catch (\Exception $exception) {
-            return ['error' => $exception->getMessage()];
+            throw new \Exception($exception->getMessage(),
+                $exception->getCode() === 0 ? 500 : $exception->getCode());
         }
-        $user = (\GuzzleHttp\json_decode($result->getBody(), true))['user'];
-
         if (!isset($user['address'])) {
             throw new \Exception('Endereço não preenchido.', 422);
         }
@@ -71,65 +71,24 @@ class Client
     }
 
     /**
-     * @param array $descriptions
-     * @param array $details
-     * @param float $value
-     * @param float $discount
-     * @param string $beneficiary
-     * @param int $deadline
+     * @param \JsonSerializable $payment
      * @return array
      * @throws \Exception
      */
-    public function createBoleto(array $descriptions,
-                                 array $details,
-                                 float $value,
-                                 string $beneficiary,
-                                 float $discount = 0.0,
-                                 int $deadline = 1) : array
+    public function send(\JsonSerializable $payment) : array
     {
         $payer = $this->getPayer();
-        if (isset($payer['error'])) {
-            return $payer;
+        $form_params = array_merge($payer, $payment->jsonSerialize());
+        $uri = '';
+        if ($payment instanceof Boleto) {
+            $uri = 'api/boleto';
+        } elseif ($payment instanceof CreditCard) {
+            $uri = 'api/credit';
+        } else {
+            throw new \Exception('Tipo não reconhecido.', 500);
         }
-        foreach ($descriptions as $key => $description) {
-            $descriptions[$key] = compact('description');
-        }
-        $data = compact('payer', 'descriptions', 'value', 'discount', 'details', 'deadline', 'beneficiary');
-        try {
-            $result = $this->client->post('api/boleto', ['form_params' => $data]);
-        } catch (\Exception $exception) {
-            return ['error' => $exception->getMessage()];
-        }
+        $result = $this->client->post($uri, compact('form_params'));
 
-        return \GuzzleHttp\json_decode($result->getBody(), true);
-    }
-
-    /**
-     * @param array $details
-     * @param array $credit_card
-     * @param float $value
-     * @param string $beneficiary
-     * @param float $discount
-     * @return array
-     * @throws \Exception
-     */
-    public function createCreditCard(array $details,
-                                 array $credit_card,
-                                 float $value,
-                                 string $beneficiary,
-                                 float $discount = 0.0) : array
-    {
-        $payer = $this->getPayer();
-        if (isset($payer['error'])) {
-            return $payer;
-        }
-        $data = compact('payer', 'credit_card', 'value', 'discount', 'details', 'beneficiary');
-        try {
-            $result = $this->client->post('api/credit', ['form_params' => $data]);
-        } catch (\Exception $exception) {
-            return ['error' => $exception->getMessage()];
-        }
-
-        return \GuzzleHttp\json_decode($result->getBody(), true);
+        return json_decode($result->getBody(), true);
     }
 }
