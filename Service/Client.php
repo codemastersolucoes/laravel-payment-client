@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Payments\Client\Entities\Beneficiary;
 use Payments\Client\Entities\Boleto;
 use Payments\Client\Entities\CreditCard;
+use Payments\Client\Entities\DebitCard;
 
 
 class Client
@@ -84,6 +85,8 @@ class Client
             $uri = 'api/boleto';
         } elseif ($payment instanceof CreditCard) {
             $uri = 'api/credit';
+        } elseif ($payment instanceof DebitCard) {
+            $uri = 'api/debit';
         } else {
             throw new \Exception('Tipo não reconhecido.', 500);
         }

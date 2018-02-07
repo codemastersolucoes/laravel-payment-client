@@ -4,7 +4,7 @@ namespace Payments\Client\Entities;
 
 use Carbon\Carbon;
 
-class CreditCard implements \JsonSerializable
+class DebitCard implements \JsonSerializable
 {
     /**
      * @var Payment
@@ -37,32 +37,20 @@ class CreditCard implements \JsonSerializable
     private $expiration;
 
     /**
-     * @var int
-     */
-    private $installments;
-
-    /**
      * CreditCard constructor.
      * @param string $number
      * @param string $holder
      * @param string $brand
      * @param string $cvv
      * @param Carbon $expiration
-     * @param int $installments
      */
-    public function __construct(string $number,
-                                string $holder,
-                                string $brand,
-                                string $cvv,
-                                Carbon $expiration,
-                                int $installments = 1)
+    public function __construct(string $number, string $holder, string $brand, string $cvv, Carbon $expiration)
     {
         $this->number = $number;
         $this->holder = $holder;
         $this->brand = $brand;
         $this->cvv = $cvv;
         $this->expiration = $expiration;
-        $this->installments = $installments;
     }
 
     /**
@@ -89,8 +77,7 @@ class CreditCard implements \JsonSerializable
             'holder' => $this->holder,
             'expiration' => $this->expiration->format('m/Y')
         ];
-        $installments = $this->installments;
 
-        return array_merge(compact('credit_card', 'installments'), $this->payment->jsonSerialize());
+        return array_merge(compact('credit_card'), $this->payment->jsonSerialize());
     }
 }
