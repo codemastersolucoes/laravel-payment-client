@@ -42,15 +42,15 @@ class DebitCard implements \JsonSerializable
      * @param string $holder
      * @param string $brand
      * @param string $cvv
-     * @param Carbon $expiration
+     * @param string $expiration
      */
-    public function __construct(string $number, string $holder, string $brand, string $cvv, Carbon $expiration)
+    public function __construct(string $number, string $holder, string $brand, string $cvv, string $expiration)
     {
         $this->number = $number;
         $this->holder = $holder;
         $this->brand = $brand;
         $this->cvv = $cvv;
-        $this->expiration = $expiration;
+        $this->expiration = Carbon::createFromFormat('m/Y', $expiration);
     }
 
     /**

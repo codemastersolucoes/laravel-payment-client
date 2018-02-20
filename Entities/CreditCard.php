@@ -47,21 +47,21 @@ class CreditCard implements \JsonSerializable
      * @param string $holder
      * @param string $brand
      * @param string $cvv
-     * @param Carbon $expiration
+     * @param string $expiration
      * @param int $installments
      */
     public function __construct(string $number,
                                 string $holder,
                                 string $brand,
                                 string $cvv,
-                                Carbon $expiration,
+                                string $expiration,
                                 int $installments = 1)
     {
         $this->number = $number;
         $this->holder = $holder;
         $this->brand = $brand;
         $this->cvv = $cvv;
-        $this->expiration = $expiration;
+        $this->expiration = Carbon::createFromFormat('m/Y', $expiration);
         $this->installments = $installments;
     }
 
