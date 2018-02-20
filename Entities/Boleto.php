@@ -24,7 +24,7 @@ class Boleto implements \JsonSerializable
      * Boleto constructor.
      * @param int $deadline
      */
-    public function __construct(int $deadline = 0)
+    public function __construct(int $deadline = 1)
     {
         $this->deadline = $deadline;
         $this->descriptions = [];
@@ -33,6 +33,14 @@ class Boleto implements \JsonSerializable
     public function addDescription(string $description)
     {
         $this->descriptions[] = compact('description');
+    }
+
+    /**
+     * @param Payment $payment
+     */
+    public function setPayment(Payment $payment)
+    {
+        $this->payment = $payment;
     }
 
     /**
