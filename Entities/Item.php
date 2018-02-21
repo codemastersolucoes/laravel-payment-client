@@ -32,9 +32,12 @@ class Item implements \JsonSerializable
         $this->details = [];
     }
 
-    public function addDetail(string $item, float $value)
+    /**
+     * @param Detail $detail
+     */
+    public function addDetail(Detail $detail)
     {
-        $this->details[] = compact('item', 'value');
+        $this->details[] = $detail;
     }
 
     /**
@@ -48,7 +51,11 @@ class Item implements \JsonSerializable
     {
         $name = $this->name;
         $beneficiary = $this->beneficiary;
-        $details = $this->details;
+        $details = [];
+        /** @var Detail $detail */
+        foreach ($this->details  as $detail) {
+            $details[] = $detail->jsonSerialize();
+        }
 
         return compact('name', 'beneficiary', 'details');
     }

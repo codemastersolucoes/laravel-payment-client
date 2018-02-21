@@ -79,7 +79,7 @@ class Client
     public function send(\JsonSerializable $payment) : array
     {
         $payer = $this->getPayer();
-        $form_params = array_merge($payer, $payment->jsonSerialize());
+        $form_params = array_merge(compact('payer'), $payment->jsonSerialize());
         $uri = '';
         if ($payment instanceof Boleto) {
             $uri = 'api/boleto';

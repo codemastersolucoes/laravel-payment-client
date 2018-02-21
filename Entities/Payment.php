@@ -10,12 +10,6 @@ class Payment implements \JsonSerializable
      * @var float
      */
     private $value;
-
-    /**
-     * @var float
-     */
-    private $discount;
-
     /**
      * @var array
      */
@@ -24,12 +18,10 @@ class Payment implements \JsonSerializable
     /**
      * Payment constructor.
      * @param float $value
-     * @param float $discount
      */
-    public function __construct(float $value, float $discount)
+    public function __construct(float $value)
     {
         $this->value = $value;
-        $this->discount = $discount;
         $this->items = [];
     }
 
@@ -48,11 +40,10 @@ class Payment implements \JsonSerializable
     public function jsonSerialize() : array
     {
         $value = $this->value;
-        $discount = $this->discount;
         $items = [];
         foreach ($this->items as $item) {
-            $items[] = $item.jsonSerialize();
+            $items[] = $item->jsonSerialize();
         }
-        return compact('value', 'discount', 'items');
+        return compact('value', 'items');
     }
 }
