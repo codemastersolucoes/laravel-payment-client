@@ -1,15 +1,12 @@
 <?php
 
-
 namespace Payments\Client\Service;
-
 
 use Carbon\Carbon;
 use Payments\Client\Entities\Beneficiary;
 use Payments\Client\Entities\Boleto;
 use Payments\Client\Entities\CreditCard;
 use Payments\Client\Entities\DebitCard;
-
 
 class Client
 {
@@ -25,7 +22,11 @@ class Client
     {
         $this->client = new \GuzzleHttp\Client([
             'base_uri' => config('payment.server'),
-            'headers' => ['Accept' => 'application/json']
+            'headers' => [
+                'Accept' => 'application/json',
+                'system' => config('payment.system'),
+                'password' => config('payment.password')
+            ]
         ]);
     }
 

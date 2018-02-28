@@ -22,7 +22,6 @@ class ClientServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerConfig();
-        $this->registerViews();
     }
 
     /**
@@ -48,26 +47,6 @@ class ClientServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../Config/config.php', 'payment'
         );
-    }
-
-    /**
-     * Register views.
-     *
-     * @return void
-     */
-    public function registerViews()
-    {
-        $viewPath = resource_path('views/modules/client');
-
-        $sourcePath = __DIR__.'/../Resources/views';
-
-        $this->publishes([
-            $sourcePath => $viewPath
-        ]);
-
-        $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path . '/modules/client';
-        }, \Config::get('view.paths')), [$sourcePath]), 'client');
     }
 
     /**

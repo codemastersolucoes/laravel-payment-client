@@ -1,13 +1,23 @@
 {
     "name": "payments/client",
     "description": "Payment Client",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "authors": [
         {
             "name": "Felipe da Silva Pinheiro",
             "email": "felipepinheiro@univicosa.com.br"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Payments\\Client\\Providers\\ClientServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
     "require": {
         "php": ">=7.0.0",
         "auth/openid-client": ">=0.6.6",
