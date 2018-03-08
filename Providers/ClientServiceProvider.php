@@ -3,7 +3,7 @@
 namespace Payments\Client\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
+use Payments\Client\Service\Client;
 
 class ClientServiceProvider extends ServiceProvider
 {
@@ -22,6 +22,9 @@ class ClientServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerConfig();
+        $this->app->singleton('payment', function ($app) {
+            return new Client();
+        });
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Payments\Client\Service;
 
-use Carbon\Carbon;
 use Payments\Client\Entities\Beneficiary;
 use Payments\Client\Entities\Boleto;
 use Payments\Client\Entities\CreditCard;
@@ -41,7 +40,22 @@ class Client
         } catch (\Exception $exception) {
             return ['error' => $exception->getMessage()];
         }
-        return \GuzzleHttp\json_decode($result->getBody(), true);
+        return json_decode($result->getBody(), true);
+    }
+
+    /**
+     * @param string $boleto
+     * @return array
+     */
+    public function cancelBoleto(string $boleto) : array
+    {
+        try {
+            $result = $this->client->put('api/boleto/' . $boleto);
+        } catch (\Exception $exception) {
+            return ['error' => $exception->getMessage()];
+        }
+
+        return json_decode($result->getBody(), true);
     }
 
     /**
