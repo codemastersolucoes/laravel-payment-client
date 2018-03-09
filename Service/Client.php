@@ -65,7 +65,7 @@ class Client
     private function getPayer() : array
     {
         try {
-            $client = \Modules\OpenId\Repositories\Client::getClient();
+            $client = \OpenId::getClient();
             $result = $client->get('api/user');
             $user = (\GuzzleHttp\json_decode($result->getBody(), true))['user'];
         } catch (\Exception $exception) {
