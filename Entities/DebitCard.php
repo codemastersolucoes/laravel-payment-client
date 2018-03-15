@@ -70,7 +70,7 @@ class DebitCard implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        $credit_card = [
+        $debit_card = [
             'cvv' => $this->cvv,
             'brand' => $this->brand,
             'number' => $this->number,
@@ -78,6 +78,6 @@ class DebitCard implements \JsonSerializable
             'expiration' => $this->expiration->format('m/Y')
         ];
 
-        return array_merge(compact('credit_card'), $this->payment->jsonSerialize());
+        return array_merge(compact('debit_card'), $this->payment->jsonSerialize());
     }
 }
