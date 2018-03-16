@@ -1,7 +1,7 @@
 {
     "name": "payments/client",
     "description": "Payment Client",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "authors": [
         {
             "name": "Felipe da Silva Pinheiro",
@@ -22,7 +22,8 @@
         "php": ">=7.0.0",
         "auth/openid-client": ">=0.7.3",
         "guzzlehttp/guzzle": "^6.3",
-        "laravel/framework": ">=5.4"
+        "laravel/framework": ">=5.4",
+        "barryvdh/laravel-cors": "^0.11.0"
     },
     "autoload": {
         "psr-4": {
