@@ -22,6 +22,7 @@ class ClientServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerConfig();
+        $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
         $this->app->singleton('payment', function ($app) {
             return new Client();
         });
