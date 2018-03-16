@@ -24,7 +24,7 @@ class PaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'payments' => 'bai|required|array',
+            'payments' => 'bail|required|array',
             'payments.*.id' => 'bail|required|string',
             'payments.*.status' => 'bail|required|string'
         ];
