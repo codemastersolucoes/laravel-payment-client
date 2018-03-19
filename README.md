@@ -1,38 +1,33 @@
-# Cliente OpenId
+# Univiçosa Laravel Payment Client
 
-## Instalação
+| **Laravel**  |  **laravel-payment-client** |
+|------|------|
+| 5.4  | ^0.2.0  |
+| 5.5  | ^0.3.0  |
+| 5.6  | ^0.3.0  |
 
-Composer:
+## Install
+
+Installation using composer:
 
 ```
 composer require univicosa/laravel-payment-client
 ```
 
-### Adicionar o _Service Provider_
+And add the service provider in `config/app.php`:
 
-Em seguida registre o _service provider_ no arquivo `config/app.php`.
-
-```php
-'providers' => [
-    
-    /*
-     *    ...
-     */
-     
-    Payments\Client\Providers\ClientServiceProvider::class,
-    
-    /*
-     *    ...
-     */
-],
+```
+Modules\OpenId\Providers\OpenIdServiceProvider::class
 ```
 
-Para publicar o arquivo de configuração execute o seguinte comando:
+Publish the package's configuration file by running:
 
-```bash
+```
 php artisan vendor:publish --tag=payment
 ```
 
-O arquivo de configuração `config/payment.php` será gerado.
+The file `config/openid.php` will be generated.
 
-**Obs.:** Não esquecer de alterar o nome da aplicação no arquivo `.env`, a variável `APP_NAME`.
+Define the system in your `.env` setting the var `PAYMENT_SERVER`
+
+**PS:** Your system need to be authorized by the Payment Administration Service
