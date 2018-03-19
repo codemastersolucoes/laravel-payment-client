@@ -1,7 +1,7 @@
 {
     "name": "univicosa/laravel-payment-client",
     "description": "Payment Client",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "authors": [
         {
             "name": "Felipe da Silva Pinheiro",
