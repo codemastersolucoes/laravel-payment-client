@@ -22,7 +22,7 @@ class ReturnController extends Controller
     {
         $token = (new Parser())->parse($request->get('token'));
         $signer = new Sha256();
-        if ($token->isExpired() || $token->verify($signer, config('payment.system'))) {
+        if ($token->isExpired() || !$token->verify($signer, config('payment.system'))) {
             abort(403);
         }
         if (!$token->hasClaim('payments')) {
@@ -33,6 +33,6 @@ class ReturnController extends Controller
         $controller = resolve($class);
         $action = config('payment.action');
 
-        return $controller->$action($token->getClaim('payments'));
+        return $controller->$action(json_decode($token->getClaim('payments')));
     }
 }
