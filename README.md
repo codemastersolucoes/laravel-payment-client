@@ -2,26 +2,10 @@
 
 ## Instalação
 
-Para instalar pelo Composer, primeiro execute:
+Composer:
 
-``` bash
-composer config repositories.payments '{"type":"vcs", "url":"http://bitbucket.univicosa.com.br:7990/scm/pag/cliente.git"}'
 ```
-
-Esse comando adiciona o repositório do Bitbucket ao `composer.json`.
-
-Em seguida execute o seguinte comando:
-
-``` bash
-composer config secure-http false
-```
-
-Esse comando configura o composer para aceitar conexões via `http`.
-
-Por fim execute o comando `require` a seguir:
-
-```bash
-composer require payments/client
+composer require univicosa/laravel-payment-client
 ```
 
 ### Adicionar o _Service Provider_
