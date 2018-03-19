@@ -1,54 +1,33 @@
-# Cliente OpenId
+# Univiçosa Laravel Payment Client
 
-## Instalação
+| **Laravel**  |  **laravel-payment-client** |
+|------|------|
+| 5.4  | ^0.2.0  |
+| 5.5  | ^0.3.0  |
+| 5.6  | ^0.3.0  |
 
-Para instalar pelo Composer, primeiro execute:
+## Install
 
-``` bash
-composer config repositories.payments '{"type":"vcs", "url":"http://bitbucket.univicosa.com.br:7990/scm/pag/cliente.git"}'
+Installation using composer:
+
+```
+composer require univicosa/laravel-payment-client
 ```
 
-Esse comando adiciona o repositório do Bitbucket ao `composer.json`.
+And add the service provider in `config/app.php`:
 
-Em seguida execute o seguinte comando:
-
-``` bash
-composer config secure-http false
+```
+Modules\OpenId\Providers\OpenIdServiceProvider::class
 ```
 
-Esse comando configura o composer para aceitar conexões via `http`.
+Publish the package's configuration file by running:
 
-Por fim execute o comando `require` a seguir:
-
-```bash
-composer require payments/client
 ```
-
-### Adicionar o _Service Provider_
-
-Em seguida registre o _service provider_ no arquivo `config/app.php`.
-
-```php
-'providers' => [
-    
-    /*
-     *    ...
-     */
-     
-    Payments\Client\Providers\ClientServiceProvider::class,
-    
-    /*
-     *    ...
-     */
-],
-```
-
-Para publicar o arquivo de configuração execute o seguinte comando:
-
-```bash
 php artisan vendor:publish --tag=payment
 ```
 
-O arquivo de configuração `config/payment.php` será gerado.
+The file `config/openid.php` will be generated.
 
-**Obs.:** Não esquecer de alterar o nome da aplicação no arquivo `.env`, a variável `APP_NAME`.
+Define the system in your `.env` setting the var `PAYMENT_SERVER`
+
+**PS:** Your system need to be authorized by the Payment Administration Service
