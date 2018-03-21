@@ -11,17 +11,17 @@ class Item implements \JsonSerializable
     private $name;
 
     /**
-     * @var double
+     * @var float
      */
     private $amount;
 
     /**
-     * @var double
+     * @var float
      */
     private $discount_amount;
 
     /**
-     * @var double
+     * @var float
      */
     private $final_value;
 
@@ -49,9 +49,9 @@ class Item implements \JsonSerializable
      * @param string $beneficiary
      */
     public function __construct(string $name,
-                                double $amount,
-                                double $discount_amount,
-                                double $final_value,
+                                float $amount,
+                                float $discount_amount,
+                                float $final_value,
                                 string $beneficiary)
     {
         $this->name = $name;
@@ -71,7 +71,11 @@ class Item implements \JsonSerializable
         $this->details[] = $detail;
     }
 
-    public function addDiscount(string $key, double $value)
+    /**
+     * @param string $key
+     * @param float $value
+     */
+    public function addDiscount(string $key, float $value)
     {
         $this->discounts[$key] = $value;
     }
