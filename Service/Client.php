@@ -70,7 +70,7 @@ class Client
             $user = (\GuzzleHttp\json_decode($result->getBody(), true))['user'];
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage(),
-                $exception->getCode() === 0 ? 500 : $exception->getCode());
+                $exception->getCode() === 0 ? 400 : $exception->getCode());
         }
         if (!isset($user['address'])) {
             throw new \Exception('Endereço não preenchido.', 422);
@@ -103,7 +103,7 @@ class Client
         } elseif ($payment instanceof DebitCard) {
             $uri = 'api/debit';
         } else {
-            throw new \Exception('Tipo não reconhecido.', 500);
+            throw new \Exception('Tipo não reconhecido.', 400);
         }
         $result = $this->client->post($uri, compact('form_params'));
 

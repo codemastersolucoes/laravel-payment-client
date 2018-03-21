@@ -11,9 +11,24 @@ class Item implements \JsonSerializable
     private $name;
 
     /**
+     * @var double
+     */
+    private $amount;
+
+    /**
+     * @var double
+     */
+    private $discount_amount;
+
+    /**
+     * @var double
+     */
+    private $final_value;
+
+    /**
      * @var array
      */
-    private $details;
+    private $discounts;
 
     /**
      * @var string
@@ -21,13 +36,29 @@ class Item implements \JsonSerializable
     private $beneficiary;
 
     /**
+     * @var array
+     */
+    private $details;
+
+    /**
      * Item constructor.
      * @param string $name
+     * @param float $amount
+     * @param float $discount_amount
+     * @param float $final_value
      * @param string $beneficiary
      */
-    public function __construct(string $name, string $beneficiary)
+    public function __construct(string $name,
+                                double $amount,
+                                double $discount_amount,
+                                double $final_value,
+                                string $beneficiary)
     {
         $this->name = $name;
+        $this->amount = $amount;
+        $this->discount_amount = $discount_amount;
+        $this->final_value = $final_value;
+        $this->discounts = [];
         $this->beneficiary = $beneficiary;
         $this->details = [];
     }
@@ -40,6 +71,11 @@ class Item implements \JsonSerializable
         $this->details[] = $detail;
     }
 
+    public function addDiscount(string $key, double $value)
+    {
+        $this->discounts[$key] = $value;
+    }
+
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -50,13 +86,24 @@ class Item implements \JsonSerializable
     public function jsonSerialize() : array
     {
         $name = $this->name;
+        $amount = $this->amount;
+        $discount_amount = $this->discount_amount;
+        $final_value = $this->final_value;
+        $discounts = $this->discounts;
         $beneficiary = $this->beneficiary;
+
         $details = [];
         /** @var Detail $detail */
         foreach ($this->details  as $detail) {
             $details[] = $detail->jsonSerialize();
         }
 
-        return compact('name', 'beneficiary', 'details');
+        $result = compact('name', 'amount', 'discount_amount', 'final_value', 'beneficiary', 'details');
+
+        if (!empty($discounts)) {
+            $result = array_merge($result, compact('discounts'));
+        }
+
+        return $result;
     }
 }

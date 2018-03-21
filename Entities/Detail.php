@@ -16,11 +16,6 @@ class Detail implements \JsonSerializable
     protected $value;
 
     /**
-     * @var array
-     */
-    protected $discounts;
-
-    /**
      * Detail constructor.
      * @param string $item
      * @param float $value
@@ -29,16 +24,6 @@ class Detail implements \JsonSerializable
     {
         $this->item = $item;
         $this->value = $value;
-        $this->discounts = [];
-    }
-
-    /**
-     * @param float $discount
-     * @param string $reason
-     */
-    public function addDiscount(float $discount, string $reason)
-    {
-        $this->discounts[] = compact('discount', 'reason');
     }
 
     /**
@@ -52,8 +37,7 @@ class Detail implements \JsonSerializable
     {
         $item = $this->item;
         $value = $this->value;
-        $discounts = $this->discounts;
 
-        return compact('item', 'value', 'discounts');
+        return compact('item', 'value');
     }
 }
